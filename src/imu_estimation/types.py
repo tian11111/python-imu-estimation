@@ -1,4 +1,4 @@
-"""Shared data contracts used across the Python IMU estimation package."""
+"""Shared data contracts mirroring USER/imu/include/imu_types.h."""
 from __future__ import absolute_import
 
 from dataclasses import dataclass, field
@@ -94,8 +94,6 @@ class ImuOutput:
     gyro_bias_body_rad_s: Sequence[float] = (0.0, 0.0, 0.0)
     gyro_corrected_body_rad_s: Sequence[float] = (0.0, 0.0, 0.0)
     temperature_c: float = 0.0
-    specific_force_body_mps2: Sequence[float] = (0.0, 0.0, 0.0)
-    linear_acceleration_world_mps2: Sequence[float] = (0.0, 0.0, 0.0)
     specific_force_update_count: int = 0
     zaru_update_count: int = 0
     state_flags: int = 0

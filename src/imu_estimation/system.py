@@ -8,7 +8,6 @@ import numpy as np
 
 from . import calibration
 from .config import CalibrationConfig, StationaryConfig
-from .math3d import quaternion_rotate_body_to_world
 from .mekf import Mekf, MekfConfig, _fused_yaw, _normalize, _qexp, _qmul
 from .stationary import StationaryDetector
 from .types import (ImuOutput, ImuStatus, MotionState, OUTPUT_STATE_ATTITUDE_VALID,
@@ -141,11 +140,6 @@ class ImuSystem(object):
         if euler is None or predicted is None or tilt is None:
             return ImuStatus.NUMERIC_ERROR
         force = np.asarray(sample.specific_force_body_mps2, dtype=float)
-        linear_acceleration_world = quaternion_rotate_body_to_world(
-            self.mekf.quaternion_wb, force) - np.array(
-                (0.0, 0.0, calibration.STANDARD_GRAVITY_MPS2), dtype=float)
-        if not np.all(np.isfinite(linear_acceleration_world)):
-            return ImuStatus.NUMERIC_ERROR
         lateral = math.hypot(force[1], force[2])
         flags = OUTPUT_STATE_READY | OUTPUT_STATE_ATTITUDE_VALID
         if stationary.state == MotionState.ANGULAR_STATIC:
@@ -161,9 +155,7 @@ class ImuSystem(object):
             accel_roll_rad=math.atan2(force[1], force[2]), accel_pitch_rad=math.atan2(-force[0], lateral),
             gyro_bias_body_rad_s=self.mekf.gyro_bias_body_rad_s.copy(),
             gyro_corrected_body_rad_s=np.asarray(sample.gyro_pre_body_rad_s) - self.mekf.gyro_bias_body_rad_s,
-            temperature_c=sample.temperature_c, specific_force_body_mps2=force.copy(),
-            linear_acceleration_world_mps2=linear_acceleration_world,
-            specific_force_update_count=self.mekf.specific_force_update_count,
+            temperature_c=sample.temperature_c, specific_force_update_count=self.mekf.specific_force_update_count,
             zaru_update_count=self.mekf.zaru_update_count, state_flags=flags)
         return ImuStatus.OK
 
