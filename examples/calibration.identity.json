@@ -1,0 +1,10 @@
+{
+  "temperature_reference_c": 25.0,
+  "temperature_min_c": -40.0,
+  "temperature_max_c": 85.0,
+  "gyro_temperature_coeff_sensor": [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]],
+  "gyro_correction_matrix": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+  "accel_bias_sensor_mps2": [0.0, 0.0, 0.0],
+  "accel_correction_matrix": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+  "sensor_to_body": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+}
